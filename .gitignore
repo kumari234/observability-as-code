@@ -30,3 +30,7 @@ thumb.db
 
 # Logs
 *.log
+
+# Local AWS IAM setup files
+github-actions-terraform-policy.json
+github-actions-trust-policy.json
