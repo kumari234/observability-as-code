@@ -1,0 +1,31 @@
+</> gitignore
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+
+# Terraform variables containing secrets
+*.tfvars
+*.tfvars.json
+
+# Terraform lockfile should not be ignored
+# .terraform.lock.hcl
+
+#environment files
+.env
+.env.*
+
+#IDE
+.vscode/
+.idea/
+
+# OD
+.DS_Store
+thumb.db
+
+# Logs
+*.log
