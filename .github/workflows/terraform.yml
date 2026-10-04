@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "environments/dev/**"
+      - "modules/**"
       - ".github/workflows/terraform.yml"
 
   push:
@@ -11,6 +12,7 @@ on:
       - main
     paths:
       - "environments/dev/**"
+      - "modules/**"
       - ".github/workflows/terraform.yml"
 
 permissions:
