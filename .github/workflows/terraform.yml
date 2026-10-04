@@ -86,35 +86,11 @@ jobs:
           name: terraform-plan
           path: environments/dev
 
-      - name: Debug Apply OIDC claims
-        env:
-          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
-          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
-        run: |
-          TOKEN=$(curl -sS \
-            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r '.value')
-
-          export PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f 2)
-
-          python3 -c '
-          import base64, json, os
-          token = os.environ["PAYLOAD"]
-          token += "=" * (-len(token) % 4)
-          claims = json.loads(base64.urlsafe_b64decode(token))
-
-          for key in ["iss", "sub", "aud", "repository", "repository_id",
-                      "repository_owner", "repository_owner_id",
-                      "environment", "ref", "event_name"]:
-              print(f"{key}: {claims.get(key)}")
-          '
-
-
-     # - name: Configure AWS credentials
-     #  uses: aws-actions/configure-aws-credentials@v4
-     #   with:
-     #     role-to-assume: arn:aws:iam::042134552486:role/ObservabilityAsCodeGitHubActionsRole
-      #    aws-region: ap-south-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::042134552486:role/ObservabilityAsCodeGitHubActionsRole
+          aws-region: ap-south-1
 
       - name: Terraform Init
         run: terraform init -input=false
