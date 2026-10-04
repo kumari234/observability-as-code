@@ -57,9 +57,32 @@ jobs:
           name: terraform-plan
           path: environments/dev/tfplan
 
+  terraform-security:
+    name: Terraform Security Scan
+    needs: terraform
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Trivy IaC Scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: config
+          scan-ref: environments/dev
+          format: table
+          exit-code: "1"
+          severity: CRITICAL,HIGH
+
   terraform-apply:
     name: Terraform Apply
-    needs: terraform
+    needs:
+      - terraform
+      - terraform-security
     runs-on: ubuntu-latest
 
     environment:
