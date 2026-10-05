@@ -74,3 +74,25 @@ module "vpc" {
 
   enable_nat_gateway = false
 }
+
+module "security_group" {
+  source = "../../modules/security-group"
+
+  project_name = local.project_name
+  environment  = var.environment
+
+  vpc_id = module.vpc.vpc_id
+
+  security_group_name        = "${local.project_name}-${var.environment}-default"
+  security_group_description = "Default security group for ${local.project_name} ${var.environment}"
+}
+
+module "ecr" {
+  source = "../../modules/ecr"
+
+  project_name = local.project_name
+  environment  = var.environment
+
+  repository_name = "${local.project_name}-${var.environment}"
+}
+
