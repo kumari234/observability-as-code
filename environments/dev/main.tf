@@ -96,3 +96,11 @@ module "ecr" {
   repository_name = "${local.project_name}-${var.environment}"
 }
 
+module "eks_iam" {
+  source = "../../modules/eks-iam"
+
+  project_name = local.project_name
+  environment  = var.environment
+
+  cluster_role_name = "${local.project_name}-${var.environment}-eks-cluster-role"
+}
